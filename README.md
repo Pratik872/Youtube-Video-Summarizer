@@ -14,82 +14,36 @@
 
 ## Methodology
 
-![MultiModal RAG Flow](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/Multimodal_RAG_Flow.png)
+![App Demo](https://github.com/Pratik872/Youtube-Video-Summarizer/blob/main/readme%20resources/app%20demo.png)
 
-The RAG Framework involves:
-- Preprocessing videos/images for passing into framework
+The Web Application involves:
+- Initializing the web application
 
-- Computing the joint embeddings of images/videos and captions and ingesting them into vector store
+- Invoking a Large Language model
 
-- Passing a query from user to the framework and augmenting the query using the video transcripts
+- Creating a prompt for LLM 
 
-- Using a Large Vision-Language Model to get inference and chat completion
+- Passing the URL to Langchain/external tools to get the transcripts. Conversion of those transcripts into data and passing it to LLM
 
-### 1 - Computing Embeddings
+### 1 - Initializing the Web Application
+- Created using Streamlit
 
-Here are sample pictures and computation of BridgeTower embeddings
+- Integrated the application with Groq API
 
-![Sample images](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/sample_images_embeds.png)
+### 2 - Invoking a Large Language model
+- Used `Gemma-7b-It` model through Groq. Other free models can also be used
 
-The embeddings have 512 dimensions and so I have used UMAP to project into 2 dimensions to visualize it
+- Prompts would be passed to this model using Groq API
 
-![UMAP](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/embeds_UMAP.png)
+### 3 - Creating a prompt for LLM
+- Created a prompt template using `Langchain`
 
-- The embeddings of image-text pairs of `cats` (i.e., blue dots) are
-closed to each other.
-- The embeddings of image-text pairs of `cars` (i.e., orange dots) are
-closed to each other.
-- The embeddings of image-text pairs of `cats` (blue dots) are far away
-from the embeddings of image-text pairs of `cars` (orange dots).
+- Defined the prompt to LLM using prompt template
 
+### 4 - Getting transcripts for the video/website using external tools and `Langchain`
+- Fetching the URL uploaded by user through streamlit
 
-### 2 - Preprocessing Videos
-
-- Videos were downloaded from Youtube along with the transcripts. For the videos which didn't have transcripts were generated using 'Whisper' model.
-
-- For videos without language, LVLM model was used to generate captions which were then passed as an query.
-
-- For each video segment, we will extract:
-    1. A frame right at the middle of the time frame of the video segment;
-    2. Its metadata including:
-        -extracted_frame_path: Path to the saved extracted-frame;
-        -transcript: Transcript of the extracted frame;
-        -video_segment_id: The order of video segment from which the frame was extracted;
-        -video_path: Path to the video from which the frame was extracted; This helps to retrieve the correct video when there are many ones in your video corpus;
-        -mid_time_ms: Time stamp (in ms) of the extracted frame
-
-- Here is the sample generated caption for an image
- ![video_preprocess](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/video_preprocess.png)
-
-
-### 3 - Vector Store - Ingesting and Retrieval
-![vector_store](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/vector_stores.png)
-
-- LanceDB (as retreiever) and Langchain was used to store the embeddings for the metadata.
-
-- Top 'k' results were retrieved. Below are the sample quesry and results for top 3.
-        Query - "a toddler and an adult"
-
-        ![1](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/1.png)
-        ![2](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/2.png)
-        ![3](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/3.png)
-
-
-### 4 - Large Vision-Language model for completion
-
-![LLMvsLVLM](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/LLM%20vs%20LVLM.png)
-
-#### LLaVA (Large Language-and-Vision Assistant) model
-![LLaVA](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/LLaVA.png)
-- LLaVA , an end-to-end trained large multimodal model that connects a vision encoder and LLM for general-purpose visual and language understanding.
-
-- LLaVA doesn't just see images but understands them, reads the text embedded in them, and reasons about their context—all while conversing with you in a way that feels almost natural.
-
-
-### 5 - Working of Application
-
-- ![sample1](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/working1.png)
-- ![sample2](https://github.com/Pratik872/RAG/blob/main/Multimodal%20RAG/images/working2.png)
+- Used this URL to get transcripts through `YoutubeLoader` and `UnstructuredURLLoader` in `Langchain` and converting those to data which needs to be passed to the LLM
 
 
 ### Built with 🛠️
