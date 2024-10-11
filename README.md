@@ -46,8 +46,13 @@ The Web Application involves:
 - Used this URL to get transcripts through `YoutubeLoader` and `UnstructuredURLLoader` in `Langchain` and converting those to data which needs to be passed to the LLM
 
 
+### Sample Working
+
+![Demo](https://github.com/Pratik872/Youtube-Video-Summarizer/blob/main/readme%20resources/app%20sample.png)
+
+
 ### Built with 🛠️
-- Packages/Repo : Langchain, Jupyter, LanceDB, Gradio
+- Packages/Repo : Langchain, Jupyter, Streamlit, Groq
 
 - Coded on : Jupter Notebook (modelling), VSCode(building application)
 
